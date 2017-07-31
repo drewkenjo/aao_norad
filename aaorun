@@ -1,0 +1,12 @@
+#!/bin/sh
+# set up working directory and output file environment variables
+workdir=/work/clas/disk5/$USER
+FRZN=$workdir/aao_norad.rz
+FOUT=$workdir/aao_norad.out
+FSUM=$workdir/aao_norad.sum
+FBOS=$workdir/aao_norad.evt
+# remove preexisting files in the working directory
+rm $FRZN $FOUT $FSUM $FBOS 
+export FRZN FOUT FSUM FBOS
+# execute the generator
+$TOP_DIR/bin/$OS_NAME/aao_norad < aao_norad_input.inp
