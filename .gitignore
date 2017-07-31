@@ -1,3 +1,9 @@
 build
 *~
 depends
+*.root
+*.rz
+*.out
+*.lund
+*.s
+
