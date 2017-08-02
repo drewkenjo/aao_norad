@@ -69,7 +69,7 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       integer*4 idum
       integer*4 ntries
       
-      real*4 ntp(21)
+      real*4 ntp(22)
 
       common /pawc/h(1000000)
       common/quest/iquest(100)
@@ -197,7 +197,7 @@ c     boso:	1=bos output, 0=no bos output
       call hbname(10,'AONORAD',ntp(1),'ES:R,EP:R,THETE:R,
      *W:R,PPX:R,PPY:R,PPZ:R,EPROT:R,PPIX:R,PPIY:R,PPIZ:R,
      *EPI:R,CSTCM:R,PHICM:R,MM:R,QX:R,QZ:R,Q0:R,CSTHE:R,
-     *HEL:R,ASYM:R')
+     *HEL:R,ASYM:R,Q2:R')
 
       bosout = file_bos
       recname = 'MCEVENT'
@@ -377,7 +377,8 @@ c     if mcall .gt. 0 generate mcall n-tuple events.
         ntp(19)		= cst0
         ntp(20)		= ehel
         ntp(21)     = asym_p
-        
+        ntp(22)     = q2
+
         call hfnt(10)
         
         nevent		= nevent+1
