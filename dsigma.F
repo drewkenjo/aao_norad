@@ -14,9 +14,19 @@
       integer ehel
       real cthe     
       integer opt1,opt2,opt3
-      
+      parameter (Mp=0.93827)
+      PARAMETER (MPI0=0.134976,MPIP=0.13957018,META=0.547853)
+
       logical test1,test2,test3
  
+      if (opt2.eq.1) then
+        mesonmass = mpi0
+      elseif (opt2.eq.3) then
+        mesonmass = mpip
+      elseif (opt2.eq.5) then
+        mesonmass = meta
+      endif
+
       nu 	= 0.5*(w**2 + q2 - 0.9382799**2)/0.9382799
       s2	= sin(0.5*the)**2
       ki_mag	= (nu+sqrt(q2/s2+nu**2))*0.5
@@ -70,9 +80,7 @@ c        print *, 'ABORT',ki_mag,kf_mag,q2,w
          else
            call maid_lee(q2,w,eps,cscm,phicm,opt1,opt2,opt3,
      1           sig0,sigu,sigt,sigl,sigi,sigip,asym_p,ehel)
-        
-
-        endif
+         endif
       endif
 c      print *, 'DSIGMA: ',sig0,sigu,sigl,sigt,sigi,sigip,asym_p,ehel 
       end
