@@ -70,7 +70,9 @@ c        print *, 'ABORT',ki_mag,kf_mag,q2,w
          else
            call maid_lee(q2,w,eps,cscm,phicm,opt1,opt2,opt3,
      1           sig0,sigu,sigt,sigl,sigi,sigip,asym_p,ehel)
-         endif
+        
+
+        endif
       endif
 c      print *, 'DSIGMA: ',sig0,sigu,sigl,sigt,sigi,sigip,asym_p,ehel 
       end
