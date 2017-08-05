@@ -6,7 +6,7 @@ c  dsigma/dQ2 dphi dCosTheta* dW for ep-->ep pi0
 C
 C  exc pi0 x-section
 c
-cinput:
+c input:
 c COST = Cos(Theta*), Theta* is the angle (pi0-gamma* or  p-p')in the CM system
 c W is W
 c xb,Q2 x and Q^2 (GeV^2)
@@ -14,7 +14,7 @@ c Phi_g angle in the photon frame (radians)
 c E energy of the electron in GeV
 c heli electron helicity -1.0 or +1.0
 c
-cdel2=t (negative GeV^2)           NEGATIVE !!!!
+c del2=t (negative GeV^2)           NEGATIVE !!!!
 C
 C MESONMASS is the mass of the pi0 or eta.
 C The actual masses that will be used for the calculations are in pi0eta.par file
@@ -23,6 +23,7 @@ C The actual masses that will be used for the calculations are in pi0eta.par fil
       IMPLICIT NONE
       REAL    COST,W,del2,xb,Q2, Phi_g,E,heli, mesonmass
       REAL    Mp, mele, pi
+      real phi_grad
       parameter (Mp=0.93827)
       parameter (mele=0.000511)
       parameter (pi=3.1415926536)
@@ -39,8 +40,7 @@ c      REAL DVMPX
 c
       
       CALL XSINIT(MESONMASS)
-
-c     
+c
       S_T = 0.0
       S_L = 0.0
       S_LT = 0.0
@@ -55,9 +55,11 @@ c
        S_LTP = 2.0*SIGMA_LTP (COST,W,Q2,E)
 
 c
-       sigma0 =FLUXW(xb,Q2,E)/(2.*PI)*JACG*(
-     *                       S_T   + EPS*S_L          + 
-     * EPS                  *S_TT  * COS(2*PHI_G)       + 
+c       sigma0 =FLUXW(xb,Q2,E)/(2.*PI)*JACG*(
+       heli=0.
+       sigma0 =0.001/(2*pi)*(
+     *                       S_T   + EPS*S_L        + 
+     * EPS                  *S_TT  * COS(2*PHI_G)   + 
      * SQRT(2.*EPS*(1.+EPS))*S_LT  * COS(PHI_G)     +
      * HELI*SQRT(2.*EPS*(1.-EPS))*S_LTP * SIN(2*PHI_G)     
      * )
