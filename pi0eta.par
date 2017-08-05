@@ -1,23 +1,16 @@
-c	   Modified 01/31/2013 with new parameters for eta-meson production
-
-       REAL P(20,2)
-       DATA P/
-     *  814.599, 0.,0.447038,
-     *  1404.05, 0.,0.692986,
-     *  -5205.9,    0.986905,
-     *  608.489,    1.02909,
-     *  0.,0.,
-     *  1.08767,    1.69343,
-     *  0.,0.,0.,0.,0.,0.,
-     *  204.99,0.,0.5,
-     *  1392.1,0.,0.5,
-     *  -3083.,1.101,
-     *  271.6,0.5,
-     *  0.,0.,
-     *  1.0,2.0,
-     *  0.,0.,0.,0.,0.,0./
-
+C
+C------Parametrization based on the pi0/eta CLAS12 data
+C
+C      H_T and E_T convolutions depends on Q2, xB and t.
+C      See the HT and ET functions for more details
+C      Valery Kubarovsky
+C
+C------------------------------------  13 July 2017
        REAL AM(2)
        DATA AM/0.134976,0.547300/
        INTEGER K
        COMMON/PIETA/K
+       REAL P(10,2)
+       DATA P/
+     * 8.1791,1.9182,2.3039,.0,.0,85.5604,7.5751,2.9032,.0,.0,
+     * 5.0900,2.6546,0.7733,.0,.0,27.9687,3.0747,4.7770,.0,.0/
