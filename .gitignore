@@ -6,4 +6,6 @@ depends
 *.out
 *.lund
 *.s
+.sconsign.dblite
+*.sum
 
