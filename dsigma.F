@@ -58,7 +58,7 @@ c        print *, 'ABORT',ki_mag,kf_mag,q2,w
 
 c         if(w.gt.1.7.and.opt2.eq.1) then
 CVPK         if(w.gt.2.and.opt2.eq.1) then
-         if(w.gt.2.0 .and. opt2.eq.1) then
+         if(w.gt.1.9 .and. opt2.eq.1) then
            amp2 = 0.93827**2
            amu2 = mesonmass**2
            q2_dummy = q2

@@ -30,6 +30,11 @@ c     and make a new version.
       real*8 ephot
       real lundmass(4)
 
+      real pi0costh, pi0phi
+      real g1px, g1py, g1pz, g1p
+      real g2px, g2py, g2pz, g2p
+      real pi0bx, pi0by, pi0bz
+      real pi0bp, pi0b2, pi0gam, pi0gam2
       real csthcm, csthcm_max, cstk
       real epi, epmax, eprng, eprot, epw
       real ebeam,ep_min,ep_max,ep_test, events, evirt
@@ -311,26 +316,26 @@ c   %%%%%%%%%%%%%%%%%%% Main Calculation  %%%%%%%%%%%%%%%%%%%%%%%
 
       if (sigma0.le.0) go to 20
 
-      evirt		= (epw**2-mp**2)/2./mp
-      gam_flux		= alpha/4/pi**2*ep/es*evirt/qsq*
+      evirt = (epw**2-mp**2)/2./mp
+      gam_flux	= alpha/4/pi**2*ep/es*evirt/qsq*
      +  (2. + 1./tan(th0/2)**2/(1.+q0**2/qsq))
 
-      signr		= sigma0*gam_flux
+      signr = sigma0*gam_flux
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       xsec      = sigma0
       asym      = asym_p
       hel       = ehel
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-28    jacob		= q2**2/(2.*es*ep)
-      signr		= signr*jacob
-      sig_ratio		= signr/sigr_max
+28    jacob = q2**2/(2.*es*ep)
+      signr = signr*jacob
+      sig_ratio = signr/sigr_max
       
 c     Choose the number of times, mcall, to call the routine used
 c     to calculate kinematic quantities for the n-tuple.
 
-      rtest		= myran(idum)
-      mcall		= sig_ratio
-      stest		= sig_ratio-mcall
+      rtest = myran(idum)
+      mcall = sig_ratio
+      stest = sig_ratio-mcall
       
       if (stest .gt. rtest) mcall = mcall + 1
       if (mcall .gt. mcall_max) mcall_max=mcall
@@ -344,44 +349,44 @@ c     if mcall .gt. 0 generate mcall n-tuple events.
       if (mcall .le. 0) go to 30
       
       do j=1,mcall
-        ephot		= 0.
-        cstk		= 1.
-        phik		= 0.
+        ephot = 0.
+        cstk = 1.
+        phik = 0.
 
         call missm(ebeam,es,ep,th0,ephot,cstk,phik,mpi_s,ppx,
      *  ppy,ppz,eprot,ppix,ppiy,ppiz,epi,csthcm,phicm,wreal,mm2)
 
         if(mm2 .eq. 0. .or. ep .lt. ep_min) go to 24
 
-        w2		= mp**2+2*mp*(ebeam-ep)-2*es*ep*(1-cos(th0))+2.*mel**2
-        epw		= sqrt(w2)
+        w2 = mp**2+2*mp*(ebeam-ep)-2*es*ep*(1-cos(th0))+2.*mel**2
+        epw = sqrt(w2)
         
-        ntp(1)		= es
-        ntp(2)		= ep
-        ntp(3)		= theta
-        ntp(4)		= epw
-        ntp(5)		= ppx
-        ntp(6)		= ppy
-        ntp(7)		= ppz
-        ntp(8)		= eprot
-        ntp(9)		= ppix
-        ntp(10)		= ppiy
-        ntp(11)		= ppiz
-        ntp(12)		= epi
-        ntp(13)		= csthcm
-        ntp(14)		= phicm
-        ntp(15)		= mm2
-        ntp(16)		= qvecx
-        ntp(17)		= qvecz
-        ntp(18)		= q0
-        ntp(19)		= cst0
-        ntp(20)		= ehel
+        ntp(1) = es
+        ntp(2) = ep
+        ntp(3) = theta
+        ntp(4) = epw
+        ntp(5) = ppx
+        ntp(6) = ppy
+        ntp(7) = ppz
+        ntp(8) = eprot
+        ntp(9) = ppix
+        ntp(10) = ppiy
+        ntp(11) = ppiz
+        ntp(12) = epi
+        ntp(13) = csthcm
+        ntp(14) = phicm
+        ntp(15) = mm2
+        ntp(16) = qvecx
+        ntp(17) = qvecz
+        ntp(18) = q0
+        ntp(19) = cst0
+        ntp(20) = ehel
         ntp(21)     = asym_p
         ntp(22)     = q2
 
         call hfnt(10)
         
-        nevent		= nevent+1
+        nevent = nevent+1
         
         do jj = 1,npart
           v(jj,1) = 0.
@@ -389,64 +394,121 @@ c     if mcall .gt. 0 generate mcall n-tuple events.
           v(jj,3) = 0.
         enddo
          
-        phir		= 2.*pi*myran(idum)	!Rotate all momentum around beam line randomly
-        rotc		= cos(phir)
-        rots		= sin(phir)
+        phir = 2.*pi*myran(idum) !Rotate all momentum around beam line randomly
+        rotc = cos(phir)
+        rots = sin(phir)
 
-        px 		= ep*sin(theta*pi/180.)	!Scattered electron
-        py 		= 0.
-        p(1,1) 		= px*rotc+py*rots
-        p(1,2) 		= py*rotc-px*rots
-        p(1,3) 		= ep*cos(theta*pi/180.)
-        p(1,4) 		= ep
-        if (epirea .eq. 1) then			!Charged hadron
-          p(2,1) 	= ppx*rotc+ppy*rots
-          p(2,2) 	= ppy*rotc-ppx*rots
-          p(2,3) 	= ppz
-          p(2,4) 	= eprot
-          if (npart .eq. 3)then			!Scattered pion
-            p(3,1) 	= ppix*rotc+ppiy*rots
-            p(3,2) 	= ppiy*rotc-ppix*rots
-            p(3,3) 	= ppiz
-            p(3,4) 	= epi
+        px = ep*sin(theta*pi/180.) !Scattered electron
+        py = 0.
+        p(1,1) = px*rotc+py*rots
+        p(1,2) = py*rotc-px*rots
+        p(1,3) = ep*cos(theta*pi/180.)
+        p(1,4) = ep
+        if (epirea .eq. 1) then !Charged hadron
+          p(2,1) = ppx*rotc+ppy*rots
+          p(2,2) = ppy*rotc-ppx*rots
+          p(2,3) = ppz
+          p(2,4) = eprot
+          if (npart .eq. 3)then !Scattered pion
+            p(3,1) = ppix*rotc+ppiy*rots
+            p(3,2) = ppiy*rotc-ppix*rots
+            p(3,3) = ppiz
+            p(3,4) = epi
           endif
         else
-          p(2,1) 	= ppix*rotc+ppiy*rots	!Scattered pion
-          p(2,2) 	= ppiy*rotc-ppix*rots
-          p(2,3) 	= ppiz
-          p(2,4) 	= epi
+          p(2,1) = ppix*rotc+ppiy*rots !Scattered pion
+          p(2,2) = ppiy*rotc-ppix*rots
+          p(2,3) = ppiz
+          p(2,4) = epi
           if (npart .eq. 3)then
-            p(3,1)	= ppx*rotc+ppy*rots
-            p(3,2)	= ppy*rotc-ppx*rots
-            p(3,3)	= ppz
-            p(3,4)	= eprot
+            p(3,1) = ppx*rotc+ppy*rots
+            p(3,2) = ppy*rotc-ppx*rots
+            p(3,3) = ppz
+            p(3,4) = eprot
           endif
         endif
 
-        lundmass(1) = MEL
+
+         vertex_x = 0
+         vertex_y = 0
+         vertex_z = 5.0*(myran(idum)-0.5) - 3.0
+         lundmass(1) = MEL
          lundmass(4) = 0
          if ((epirea .eq. 1).or.(epirea.eq.5)) then
             lundmass(2) = MP
             lundmass(3) = MPI
-         else if (epirea.eq.3) then
-            lundmass(2) = MPIP
-* neutron mass 940 MeV                                                                                                                          
-            lundmass(3) = 0.940
-         endif
-         vertex_x = 0
-         vertex_y = 0
-         vertex_z = 0
-         write(13,*) "3 1 1 0 0 ",q2/(2.0*MP*(ebeam-p(1,4))), 0, epw,
+
+            pi0costh = 2.*(myran(idum)-0.5)
+            pi0phi = 2.*pi*myran(idum)
+
+            g1p = MPI/2.0
+            g1px = g1p*sqrt(1-pi0costh*pi0costh)*cos(pi0phi)
+            g1py = g1p*sqrt(1-pi0costh*pi0costh)*sin(pi0phi)
+            g1pz = g1p*pi0costh
+            g2p = g1p
+            g2px = -g1px
+            g2py = -g1py
+            g2pz = -g1pz
+
+            pi0bx = p(3,1)/p(3,4)
+            pi0by = p(3,2)/p(3,4)
+            pi0bz = p(3,3)/p(3,4)
+
+            pi0b2 = pi0bx*pi0bx + pi0by*pi0by + pi0bz*pi0bz
+            pi0gam = 1.0/(sqrt(1.0 - pi0b2))
+            if(pi0b2.gt.0) then
+              pi0gam2 = (pi0gam-1.0)/pi0b2
+            else
+              pi0gam2 = 0.0
+            endif
+
+            pi0bp = pi0bx*g1px + pi0by*g1py + pi0bz*g1pz
+            g1px = g1px + pi0gam2*pi0bp*pi0bx + pi0gam*pi0bx*g1p
+            g1py = g1py + pi0gam2*pi0bp*pi0by + pi0gam*pi0by*g1p
+            g1pz = g1pz + pi0gam2*pi0bp*pi0bz + pi0gam*pi0bz*g1p
+            g1p = pi0gam*(g1p + pi0bp)
+
+            pi0bp = pi0bx*g2px + pi0by*g2py + pi0bz*g2pz
+            g2px = g2px + pi0gam2*pi0bp*pi0bx + pi0gam*pi0bx*g2p
+            g2py = g2py + pi0gam2*pi0bp*pi0by + pi0gam*pi0by*g2p
+            g2pz = g2pz + pi0gam2*pi0bp*pi0bz + pi0gam*pi0bz*g2p
+            g2p = pi0gam*(g2p + pi0bp)
+            
+            write(13,*) "4 1 1 0 0 ",q2/(2.0*MP*(ebeam-p(1,4))), 0, epw,
      *               q2, (ebeam-p(1,4))
-         write(13,*) 1, q(1), 1, pdgid(1), 0, 0,
+c     *               phicm,sigma0,sigu,sigl,sigt,sigi,sigip
+            write(13,*) 1, q(1), 1, pdgid(1), 0, 0,
      *               p(1,1), p(1,2), p(1,3), p(1,4),
      *               lundmass(1), vertex_x, vertex_y, vertex_z
-         write(13,*) 2, q(2), 1, pdgid(2), 0, 0,
+            write(13,*) 2, q(2), 1, pdgid(2), 0, 0,
      *               p(2,1), p(2,2), p(2,3), p(2,4),
      *               lundmass(2), vertex_x, vertex_y, vertex_z
-         write(13,*) 3, q(3), 1, pdgid(3), 0, 0,
+            write(13,*) 3, 0, 1, 22, 0, 0,
+     *               g1px, g1py, g1pz, g1p, 0,
+     *               vertex_x, vertex_y, vertex_z
+            write(13,*) 4, 0, 1, 22, 0, 0,
+     *               g2px, g2py, g2pz, g2p, 0,
+     *               vertex_x, vertex_y, vertex_z
+
+         else
+            if (epirea.eq.3) then
+               lundmass(2) = MPIP
+* neutron mass 940 MeV                                                                                                                          
+               lundmass(3) = 0.940
+            endif
+            write(13,*) "3 1 1 0 0 ",q2/(2.0*MP*(ebeam-p(1,4))), 0, epw,
+     *               q2, (ebeam-p(1,4))
+c     *               phicm,sigma0,sigu,sigl,sigt,sigi,sigip
+            write(13,*) 1, q(1), 1, pdgid(1), 0, 0,
+     *               p(1,1), p(1,2), p(1,3), p(1,4),
+     *               lundmass(1), vertex_x, vertex_y, vertex_z
+            write(13,*) 2, q(2), 1, pdgid(2), 0, 0,
+     *               p(2,1), p(2,2), p(2,3), p(2,4),
+     *               lundmass(2), vertex_x, vertex_y, vertex_z
+            write(13,*) 3, q(3), 1, pdgid(3), 0, 0,
      *               p(3,1), p(3,2), p(3,3), p(3,4),
      *               lundmass(3), vertex_x, vertex_y, vertex_z
+         endif
 
 
 
@@ -834,17 +896,17 @@ C-
 C-   Outputs : get_spin
 C----------------------------------------------------------------------
       implicit none
-	  integer get_spin
-	  integer iseed
+      integer get_spin
+      integer iseed
       real    random, myran 
 
-	  random = myran(iseed)
+      random = myran(iseed)
       random = 0.5 - myran(iseed)
       get_spin = 1
       if(random.lt.0) get_spin = -1
 
-	  return
-	  end
+      return
+      end
 C======================================================================
 
 

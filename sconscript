@@ -3,4 +3,6 @@ Import('env')
 #for srcname in Glob('*.[cF]'):
 # objfile = env.Object(srcname)
 
-exenode = env.Program(target='aao_norad.exe', source = Glob('*.[cF]'))
+exenode = env.Program(target='aao_norad.exe', source = Glob('*.[cF]', exclude=['print_dvmpx.F', 'print_dvmpw.F']))
+exenode = env.Program(target='print_dvmpx', source = Glob('*.[cF]', exclude=['aao_norad.F', 'print_dvmpw.F']))
+exenode = env.Program(target='print_dvmpw', source = Glob('*.[cF]', exclude=['aao_norad.F', 'print_dvmpx.F']))
