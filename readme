@@ -1,3 +1,12 @@
+## How to compile
+1. Clone the repo to ifarm machine and `cd` into the directory
+2. Run `scons`
+
+## How to run
+1. `./build/aao_norad.exe < aao_norad_input.inp`
+
+## The format of input file
+
 The input file must have the following format. Please see the script aaorun 
 and example input file aao_norad_input.inp included in this package for an 
 example of how to run the program:
