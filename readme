@@ -1,6 +1,6 @@
 ## How to compile
 1. Clone the repo to ifarm machine and `cd` into the directory
-2. Run `scons`
+2. Run `scons-2.7`
 
 ## How to run
 1. `./build/aao_norad.exe < aao_norad_input.inp`
