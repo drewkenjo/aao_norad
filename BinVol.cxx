@@ -459,7 +459,7 @@ double p[12]={6.9439, 1.7523, -1.2875, 0.6822,  0.0, 17.0423, 1.1264,  0.0491, 1
  double S_T  = hc2*4.*pi*alpha_em/(2.*phase*Q2*Q2)*((1.-ksi*ksi)*HT*HT+(T-T0)/(8.*ProtonMass2) * ET*ET);
  double S_L  = 0.0;
  double S_LT = hc2*4.*pi*alpha_em/(TMath::Sqrt(2.)*phase*TMath::Power(Q2,1.5)) * ksi*TMath::Sqrt(1.-ksi*ksi)*TMath::Sqrt(T-T0)/(2.*ProtonMass)*HTEBAR*HTEBAR;
- double S_TT = hc2*4.*pi*alpha_em/(2.*phase*Q2*Q2)*(T-T0)/(8.*ProtonMass2) * ET*ET;
+ double S_TT = -hc2*4.*pi*alpha_em/(2.*phase*Q2*Q2)*(T-T0)/(8.*ProtonMass2) * ET*ET;
  double S_LTP = 0.;
 
  /*
