@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <stdlib.h>
 #include <TROOT.h>
@@ -120,7 +121,7 @@ for(int ie=0;ie<NeventsTot;){
 		ie++;
                  outlund << "4 1 1 0 -1 11 " << EBeam << " 2212 3 " << pi0_xsec << endl;
                  outlund << "1 -1 1   11 0 0 " 
-                         << setw(8) << v4Elec.Px() << " " << setw(8) << v4Elec.Py() << " " << setw(8) << v4Elec.Pz() << " " << setw(8) << v4Elec.E() << " 0.0005 " << gen_vx << " " << gen_vy << " " << gen_vz << endl;
+                         << std::setw(8) << v4Elec.Px() << " " << setw(8) << v4Elec.Py() << " " << setw(8) << v4Elec.Pz() << " " << setw(8) << v4Elec.E() << " 0.0005 " << gen_vx << " " << gen_vy << " " << gen_vz << endl;
                  outlund << "2  1 1 2212 0 0 " 
                          << setw(8) << v4Prot.Px() << " " << setw(8) << v4Prot.Py() << " " << setw(8) << v4Prot.Pz() << " " << setw(8) << v4Prot.E() << " 0.9383 " << gen_vx << " " << gen_vy << " " << gen_vz << endl;
                  outlund << "3  0 1   22 0 0 " 
@@ -445,19 +446,19 @@ double p[12]={6.9439, 1.7523, -1.2875, 0.6822,  0.0, 17.0423, 1.1264,  0.0491, 1
  double T0 = TMath::Abs(tmin);
 // cout << "T-T0=" << T-T0 << " , T=" << T << " , T0=" << T0 << endl;
 
- double HT = p[0]*TMath::Exp(-(p[1]+p[2]*(TMath::Log(xb)-TMath::log(0.15)))*T)*TMath::Power(Q2,p[3]/2.);
- double ET = p[5]*TMath::Exp(-(p[6]+p[7]*(TMath::Log(xb)-TMath::log(0.15)))*T)*TMath::Power(Q2,p[8]/2.);
+ double HT = p[0]*TMath::Exp(-(p[1]+p[2]*(TMath::Log(xb)-TMath::Log(0.15)))*T)*TMath::Power(Q2,p[3]/2.);
+ double ET = p[5]*TMath::Exp(-(p[6]+p[7]*(TMath::Log(xb)-TMath::Log(0.15)))*T)*TMath::Power(Q2,p[8]/2.);
  double HTEBAR = p[10]*TMath::Exp(-p[11]*T);
  
  double pi = TMath::Pi();  
  double hc2= 389379.36;
  double ProtonMass2 = ProtonMass*ProtonMass;
  double ksi = xb/(2-xb)*(1.+ProtonMass2/Q2);
- double phase = 16.*pi*(W2-ProtonMass2)*Tmath::Sqrt(W2*W2+Q2*Q2+ProtonMass2*ProtonMass2+2.*W2*Q2-2.*W2*ProtonMass2+2.*Q2*ProtonMass2);
+ double phase = 16.*pi*(W2-ProtonMass2)*TMath::Sqrt(W2*W2+Q2*Q2+ProtonMass2*ProtonMass2+2.*W2*Q2-2.*W2*ProtonMass2+2.*Q2*ProtonMass2);
 
  double S_T  = hc2*4.*pi*alpha_em/(2.*phase*Q2*Q2)*((1.-ksi*ksi)*HT*HT+(T-T0)/(8.*ProtonMass2) * ET*ET);
  double S_L  = 0.0;
- double S_LT = hc2*4.*pi*alpha_em/(TMath::Sqrt(2.)*phase*TMath::Power(Q2,1.5)) * ksi*TMath::Sqrt(1.-ksi*ksi)*TMath::Sqrt(T-T0)/(2.*ProtonMass)*HTEBAR*HETBAR;
+ double S_LT = hc2*4.*pi*alpha_em/(TMath::Sqrt(2.)*phase*TMath::Power(Q2,1.5)) * ksi*TMath::Sqrt(1.-ksi*ksi)*TMath::Sqrt(T-T0)/(2.*ProtonMass)*HTEBAR*HTEBAR;
  double S_TT = hc2*4.*pi*alpha_em/(2.*phase*Q2*Q2)*(T-T0)/(8.*ProtonMass2) * ET*ET;
  double S_LTP = 0.;
 
